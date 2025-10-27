@@ -1,376 +1,582 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madhur - AI & Data Science Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        inter: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        'brand-purple': '#6D28D9',
-                        'dark-bg': '#111111',
-                        'card-bg': '#1A1A1A',
-                        'border-color': '#2D2D2D',
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        body {
-            background-color: #000;
-            color: #E5E7EB;
-            font-family: 'Inter', sans-serif;
-        }
-        .gradient-text {
-            background: linear-gradient(90deg, #7651e8, #FDFDFD);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .nav-link {
-            position: relative;
-            transition: color 0.3s;
-        }
-        .nav-link:hover {
-            color: #7751e9;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #7249ee;
-            transition: width 0.3s;
-        }
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
-        }
-        .nav-link.active {
-            color: #7751e9;
-        }
-        /* Scroll Animation Styles */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .project-card, .skill-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .project-card:hover, .skill-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(109, 40, 217, 0.2);
-        }
-        #back-to-top-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
-            transform: translateY(20px);
-        }
-        #back-to-top-btn.is-visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Madhur Garg — AI & ML Science Innovator</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Three.js -->
+  <script src="https://unpkg.com/three@0.155.0/build/three.min.js"></script>
+
+  <style>
+    :root {
+      --purple-1: #6D28D9;
+      --bg-dark: #07060a;
+      --muted: #9CA3AF;
+    }
+    html,body { height:100%; }
+    body {
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(800px 400px at 10% 10%, rgba(109,40,217,0.04), transparent 6%),
+                  radial-gradient(600px 300px at 95% 90%, rgba(109,40,217,0.02), transparent 6%),
+                  var(--bg-dark);
+      color: #E5E7EB;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* THREE canvas behind content */
+    #three-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.98; }
+
+    /* content above canvas */
+    header, main, footer { position: relative; z-index: 10; }
+
+    header.fixed {
+      position: fixed; top:0; left:0; right:0; z-index:70;
+      background: linear-gradient(180deg, rgba(7,6,10,0.78), rgba(7,6,10,0.35));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+
+    .nav-link { position: relative; transition: color .22s; color: #e6edf3; font-weight:500; }
+    .nav-link::after {
+      content:''; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+      height:2px; width:0; background: linear-gradient(90deg, var(--purple-1), #9f7aea); transition: width .22s;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: #c9b9ff; }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--purple-1), #a78bfa);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 12px;
+    }
+
+    .skill-card { transition: transform .28s, box-shadow .28s; }
+    .skill-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 18px 40px rgba(109,40,217,0.12); }
+
+    .typewriter-line { display:inline-block; white-space:nowrap; overflow:hidden; vertical-align:bottom; }
+    .caret { border-right: .12em solid rgba(118,81,232,0.95); animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { border-color: transparent; } }
+
+    #back-to-top-btn { position: fixed; right:1.25rem; bottom:1.25rem; z-index:70; opacity:0; visibility:hidden; transform: translateY(12px); transition: all .28s; }
+    #back-to-top-btn.is-visible { opacity:1; visibility:visible; transform:none; }
+
+    .social-icon svg { transition: transform .18s ease, filter .2s ease; }
+    .social-icon:hover svg { transform: translateY(-3px) scale(1.06); filter: drop-shadow(0 6px 18px rgba(109,40,217,0.35)); }
+
+    .project-card { display:block; border-radius:12px; overflow:hidden; transition: transform .26s, box-shadow .26s; }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(109,40,217,0.12); }
+
+    /* smaller project card sizing: single column mobile, 2-column desktop but smaller height */
+    .project-grid { grid-template-columns: repeat(1, minmax(0,1fr)); }
+    @media (min-width: 1024px) {
+      .project-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+    .project-image { height: 44vh; object-fit: cover; }
+    @media (max-width: 768px) { .project-image { height: 220px; } }
+
+    /* skills grid: 2 columns mobile, 4 desktop */
+    .skills-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
+    @media (min-width: 768px) { .skills-grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+    @media (min-width: 1024px) { .skills-grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+
+    svg.icon { width:48px; height:48px; margin-bottom:8px; }
+
+    .muted { color: var(--muted); }
+
+    img { display:block; max-width:100%; height:auto; border-radius:10px; }
+
+  </style>
 </head>
-<body class="bg-black text-gray-200 font-inter">
+<body>
 
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-black/80 backdrop-blur-sm">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold tracking-wider">Madhur</h1>
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#skills" class="nav-link">Skills</a>
-                <a href="#work" class="nav-link">Work</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </nav>
-            <div class="hidden md:flex items-center space-x-4">
-                 <!-- Social Icons -->
-                 <a href="https://www.instagram.com/madhur_g24" class="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-                 <a href="https://www.linkedin.com/in/madhur-garg-5419b4244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-                 <a href="https://github.com/Madhur984" class="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
-            </div>
-             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
+  <!-- THREE.js canvas behind content -->
+  <canvas id="three-bg"></canvas>
+
+  <!-- HEADER -->
+  <header class="fixed w-full">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center shadow">
+          <!-- small logo mark -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7l3-7z"/></svg>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-             <a href="#home" class="block py-2 px-6 text-sm hover:bg-gray-800">Home</a>
-             <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-800">About</a>
-             <a href="#skills" class="block py-2 px-6 text-sm hover:bg-gray-800">Skills</a>
-             <a href="#work" class="block py-2 px-6 text-sm hover:bg-gray-800">Work</a>
-             <a href="#contact" class="block py-2 px-6 text-sm hover:bg-gray-800">Contact</a>
-             <div class="flex justify-center space-x-6 py-4 border-t border-border-color">
-                <a href="https://www.instagram.com/madhur_g24" class="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-                <a href="https://www.linkedin.com/in/madhur-garg-5419b4244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-                <a href="https://github.com/Madhur984" class="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
-            </div>
+        <div>
+          <div class="text-white font-bold">Madhur Garg</div>
+          <div class="text-xs muted -mt-0.5">AI & ML Science Innovator</div>
         </div>
-    </header>
+      </div>
 
-    <main class="container mx-auto px-6">
-        <!-- Hero Section -->
-        <section id="home" class="min-h-[80vh] flex flex-col justify-center items-center text-center py-20 fade-in-section">
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
-                Intelligent  <br class="md:hidden"/><br>
-                <span class="gradient-text">Data Solutions</span>
-            </h1>
-            <p class="mt-6 text-lg md:text-xl text-gray-400 max-w-2xl">
-                Building innovative AI and Data Science models to solve complex problems.
-            </p>
-            <div class="mt-8 flex justify-center">
-                <a href="#work" class="bg-brand-purple text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">My Work</a>
-            </div>
-        </section>
+      <!-- Nav links -->
+      <nav class="hidden md:flex items-center gap-6">
+        <a id="nav-home" class="nav-link" href="#home">Home</a>
+        <a id="nav-about" class="nav-link" href="#about">About</a>
+        <a id="nav-skills" class="nav-link" href="#skills">Skills</a>
+        <a id="nav-work" class="nav-link" href="#work">Projects</a>
+        <a id="nav-contact" class="nav-link" href="#contact">Contact</a>
+      </nav>
 
-        <!-- About Section -->
-        <section id="about" class="py-20 fade-in-section">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-bold leading-tight">
-                        Hey, I'm Madhur! <br/>
-                        <span class="gradient-text">AI & Data Scientist</span> <br/>
-                        Self Made Programmer
-                    </h2>
-                    <p class="mt-6 text-gray-400">
-                        I am a Data Scientist from India with a passion for uncovering insights from data. I specialize in Machine Learning, Deep Learning, and Natural Language Processing, using tools like Python, TensorFlow, and PyTorch to build predictive models and intelligent systems. My goal is to transform data into actionable solutions that drive business value.
-                    </p>
-                     <div class="mt-8">
-                        <a href="#work" class="bg-brand-purple text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">My Work</a>
-                    </div>
-                </div>
-                <div>
-                    <img src="Screenshot 2025-10-07 225446.png" alt="Madhur's Portrait" class="rounded-lg shadow-2xl w-full h-auto object-cover">
-                </div>
-            </div>
-        </section>
+      <!-- social icons + resume -->
+      <div class="hidden md:flex items-center gap-3">
+        <a class="social-icon" href="https://www.instagram.com/madhur_g24" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
 
-        <!-- Skills Section -->
-        <section id="skills" class="py-20 text-center fade-in-section">
-            <p class="text-brand-purple font-semibold">MY EXPERTISE</p>
-            <h2 class="text-4xl md:text-5xl font-bold mt-2">Technical Skills in AI & Data Science</h2>
-            <div id="skills-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-12">
-                <!-- Skills will be dynamically loaded here -->
-            </div>
-        </section>
+        <a class="social-icon" href="https://www.linkedin.com/in/madhur-garg-5419b4244" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        </a>
 
-        <!-- Work Section -->
-        <section id="work" class="py-20 text-center fade-in-section">
-            <p class="text-brand-purple font-semibold">MY WORK</p>
-            <h2 class="text-4xl md:text-5xl font-bold mt-2">Featured Projects</h2>
-            <div id="project-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 text-left">
-                <!-- Projects will be dynamically loaded here -->
-            </div>
-        </section>
+        <!-- FULL GitHub logo (Octocat + text) -->
+        <a class="social-icon flex items-center gap-2" href="https://github.com/Madhur984" target="_blank" rel="noopener" aria-label="GitHub">
+          <!-- Octocat mark -->
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 6px 18px rgba(109,40,217,0.18));">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.72 7.72 0 012-.27c.68.003 1.36.091 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.24.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.001 8.001 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span class="text-sm font-medium" style="color:#EDE9FE">GitHub</span>
+        </a>
 
-         <!-- Contact Section -->
-        <section id="contact" class="py-20 fade-in-section">
-            <div class="max-w-xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-bold">Get In Touch</h2>
-                <p class="mt-4 text-gray-400">Have a project in mind or want to connect? Feel free to send me an email.</p>
-                <div class="mt-8">
-                    <a href="mailto:gmadhur908@gmail.com" class="bg-brand-purple text-white px-8 py-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg">
-                        gmadhur908@gmail.com
-                    </a>
-                </div>
-            </div>
-        </section>
+        <a id="download-resume" href="#" class="px-3 py-2 rounded-md bg-gradient-to-tr from-purple-600 to-indigo-500 text-white ml-2">Download Resume</a>
+      </div>
 
-    </main>
-    
-    <!-- Footer -->
-    <footer class="border-t border-border-color mt-20">
-        <div class="container mx-auto px-6 py-6 text-center text-gray-500">
-            <p>&copy; 2025 Madhur. All Rights Reserved.</p>
+      <button id="mobile-toggle" class="md:hidden text-gray-300">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <!-- mobile nav -->
+    <div id="mobile-nav" class="hidden md:hidden border-t border-white/3">
+      <div class="px-6 py-3 flex flex-col gap-2">
+        <a href="#home" class="py-2">Home</a>
+        <a href="#about" class="py-2">About</a>
+        <a href="#skills" class="py-2">Skills</a>
+        <a href="#work" class="py-2">Projects</a>
+        <a href="#contact" class="py-2">Contact</a>
+        <div class="flex gap-3 pt-2">
+          <a href="https://www.instagram.com/madhur_g24">Instagram</a>
+          <a href="https://www.linkedin.com/in/madhur-garg-5419b4244">LinkedIn</a>
+          <a href="https://github.com/Madhur984">GitHub</a>
         </div>
-    </footer>
+      </div>
+    </div>
+  </header>
 
-    <!-- Back to Top Button -->
-    <a href="#home" id="back-to-top-btn" class="bg-brand-purple p-3 rounded-full text-white hover:bg-purple-700 transition-colors shadow-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-    </a>
-    
-    <script>
-        // --- DATA ---
-        // All portfolio data is now stored here. No backend needed.
-        const skillsData = [
-            { name: 'Python', description: 'Core language for data analysis, ML, and scripting.', iconSvg: '<svg class="w-12 h-12 mb-3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Python</title><path d="M12.83,14.74H15.2V11.26H10.15L12.83,14.74M12,5.7A3.3,3.3,0,0,0,8.7,9H11.33A.67.67,0,0,1,12,8.33a.69.69,0,0,1,.7.67.67.67,0,0,1-.67.67H8.7a3.34,3.34,0,0,0,0,6.68h2.66a.67.67,0,0,1,0,1.34H8.7a.69.69,0,0,1-.7-.67.67.67,0,0,1,.67-.67h2.63l-2.68-3.48H8.88v3.48H6.53V9H12a3.3,3.3,0,0,0,0-6.6Zm0,12.6A3.3,3.3,0,0,0,15.3,15H12.67a.67.67,0,0,1-.67-.67.69.69,0,0,1,.67-.67.67.67,0,0,1,.66.67h2.63A3.3,3.3,0,0,0,12,9.67H9.33a.67.67,0,0,1,0-1.34h3.34a.69.69,0,0,1,.7.67.67.67,0,0,1-.67.67H9.34l2.68,3.48h2.81V9.67h2.35V15H12A3.3,3.3,0,0,0,12,18.3Z" fill="#3776AB"/><path d="M12,5.7A3.3,3.3,0,0,0,8.7,9H11.33A.67.67,0,0,1,12,8.33a.69.69,0,0,1,.7.67.67.67,0,0,1-.67.67H8.7a3.34,3.34,0,0,0,0,6.68h2.66a.67.67,0,0,1,0,1.34H8.7a.69.69,0,0,1-.7-.67.67.67,0,0,1,.67-.67h2.63l-2.68-3.48H8.88v3.48H6.53V9H12a3.3,3.3,0,0,0,0-6.6Z" fill="#FFD43B"/></svg>' },
-            { name: 'TensorFlow', description: 'End-to-end platform for building and deploying ML models.', iconSvg: '<svg class="w-12 h-12 mb-3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>TensorFlow</title><path d="M3 2h18v2H3v16h18v2H3zM9.5 6 12 8.5 14.5 6H17v12h-2.5V11L12 13.5 9.5 11v7H7V6z" fill="#FF6F00"/></svg>' },
-            { name: 'PyTorch', description: 'Open source framework for deep learning and research.', iconSvg: '<svg class="w-12 h-12 mb-3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>PyTorch</title><path d="M16.32 10.36c-1.32-1.14-3.02-.86-4.14 1.24l2.95 2.95c1.15-1.16 1.37-2.83.19-3.19zM10.87 12.67l1.73-1.73c-.4-.11-.88-.16-1.41-.11-.56.04-1.06.2-1.51.45-.93.53-1.55 1.41-1.79 2.34-.29 1.21.13 2.33 1 3.2.88.88 2.08 1.26 3.27.98.94-.24 1.79-.9 2.33-1.82.26-.45.41-.95.45-1.52.03-.5-.02-1-.13-1.44l-4.04-.4zm1.13-10.67a10 10 0 100 20 10 10 0 000-20z" fill="#EE4C2C"/></svg>' },
-            { name: 'Scikit-learn', description: 'Classic machine learning algorithms and tools.', iconSvg: '<svg class="w-12 h-12 mb-3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>scikit-learn</title><circle cx="12" cy="12" r="3.5" fill="#F7931E"/><path d="M22 13.24V11.63c-1-.5-1.87-1.37-2.37-2.38l.87-1.45-1.3-1.3-1.45.87c-1-.5-1.87-1.37-2.37-2.37H13.76V3H11.13v2.88H9.5c-.5 1-1.37 1.87-2.37 2.37L5.67 6.5l-1.3 1.3.87 1.45c-.5 1-1.37 1.87-2.37 2.37v2.61c1 .5 1.87 1.37 2.37 2.38l-.87 1.45 1.3 1.3 1.45-.87c1 .5 1.87 1.37 2.37 2.37H11.13v2.88h2.63v-2.88h1.63c.5-1 1.37-1.87 2.37-2.37l1.45.87 1.3-1.3-.87-1.45c.5-1 1.37-1.87 2.37-2.37zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z" fill="#3499CD"/></svg>' },
-            { name: 'Pandas & NumPy', description: 'Essential libraries for data manipulation and analysis.', iconSvg: '<svg class="w-12 h-12 mb-3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Pandas</title><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2m-8 16H9V5h2v14m4 0h-2V5h2v14m4 0h-2V5h2v14Z" fill="#130654"/></svg>' },
-            { name: 'Keras', description: 'High-level neural networks API, written in Python.', iconSvg: '<svg class="w-12 h-12 mb-3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Keras</title><path d="M19.5 2H4.5A2.5 2.5 0 002 4.5v15A2.5 2.5 0 004.5 22h15a2.5 2.5 0 002.5-2.5v-15A2.5 2.5 0 0019.5 2M18 12l-5.5 3.5v-1.94L15.31 12 12.5 10.44V8.5L18 12M5 13.5L7.5 12 5 10.5v3Z" fill="#D00000"/></svg>' },
-            { name: 'SQL', description: 'Querying and managing relational databases.', iconSvg: '<svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 4.69 2 8c0 2.97 4.03 5.43 9 5.91V20c-3.04.5-5 1.76-5 3v1h12v-1c0-1.24-1.96-2.5-5-3v-6.09c4.97-.48 9-2.94 9-5.91C22 4.69 17.52 2 12 2zm0 2c3.31 0 6 1.79 6 4s-2.69 4-6 4-6-1.79-6-4 2.69-4 6-4z" fill="#F29111"/></svg>'},
-            { name: 'Data Visualization', description: 'Using Matplotlib & Seaborn to create insightful plots.', iconSvg: '<svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="12" width="4.5" height="9" rx="1.125" fill="#4285F4"/><rect x="9.75" y="7.5" width="4.5" height="13.5" rx="1.125" fill="#34A853"/><rect x="16.5" y="3" width="4.5" height="18" rx="1.125" fill="#FBBC05"/></svg>'},
-            { name: 'NLP', description: 'Analyzing and understanding human language with NLTK & spaCy.', iconSvg: '<svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3a9 9 0 00-9 9c0 1.82.54 3.53 1.46 5.01L3 21l3.99-1.46A8.95 8.95 0 0012 21a9 9 0 009-9h-9z" fill="#4285F4"/><path d="M21 12a9 9 0 00-9-9v9h9z" fill="#FBBC05"/><path d="M12 21a8.95 8.95 0 005.01-1.46L21 21l-1.46-3.99A8.95 8.95 0 0021 12h-9v9z" fill="#34A853"/></svg>'},
-            { name: 'Cloud (AWS/GCP)', description: 'Deploying models and managing data on cloud platforms.', iconSvg: '<svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 20h12c2.21 0 4-1.79 4-4s-1.79-4-4-4c-.34 0-.67.04-1 .11C16.33 8.58 13.41 6 10 6c-3.1 0-5.64 2.14-6.32 5.01C1.56 11.33 0 13.49 0 16c0 2.76 2.24 5 5 5h1z" fill="#4285F4"/></svg>'},
-            { name: 'Docker', description: 'Containerizing applications for reproducible environments.', iconSvg: '<svg class="w-12 h-12 mb-3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#2496ED"><title>Docker</title><path d="M22.012 12.5c0-.02 0-.04 0-.06v-.06c0-.28-.22-.5-.5-.5h-1.5c0-.01 0-.02 0-.03C20.012 10.84 19.85 9.8 19.52 8.83c-.45-1.59-1.39-2.97-2.64-3.97-.46-.38-.99-.66-1.56-.85L15.3 4.08c-.05 0-.09-.02-.14-.02-.63-.22-1.29-.34-1.97-.34-.05 0-.1 0-.15.01h-.44c-1.1.12-2.17.48-3.17.94-1.43.63-2.63 1.64-3.43 2.88-.5 1.05-.83 2.18-1.03 3.32h-.01c-.22 1.07-.33 2.18-.33 3.3 0 .74.11 1.47.31 2.18v.01c.43 1.55 1.34 2.88 2.67 3.82l.06.04c.82.52 1.79.9 2.83 1.13h.03c.47.15.96.26 1.45.32h.42l.19.01h.11c.11.01.22.02.33.02.58 0 1.14-.08 1.69-.24.55-.18 1.05-.45 1.48-.81 1.33-1.07 2.34-2.53 2.82-4.18.35-1.01.52-2.08.52-3.14l.01-.04.01-.01zm-5.01-6.5h-1.5v1.5h1.5V6zM12 6H10.5v1.5H12V6zM8.5 6H7v1.5h1.5V6zm6.5 2H14v1.5h1.5V8zM12 8H10.5v1.5H12V8zM8.5 8H7v1.5h1.5V8zM12 10h-1.5v1.5H12v-1.5z"/></svg>'},
-            { name: 'MLOps', description: 'Practices for deploying and maintaining ML models in production.', iconSvg: '<svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#A855F7;stop-opacity:1" /><stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" /></linearGradient></defs><path stroke="url(#grad1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0 0 11.667 0l3.181-3.183m-4.991-2.828a8.25 8.25 0 0 1-11.667 0l-3.181 3.183m16.023-11.667v4.992m0 0h-4.992m4.992 0l-3.181-3.183a8.25 8.25 0 0 0-11.667 0l-3.181 3.183" /></svg>'}
-        ];
+  <!-- MAIN -->
+  <main class="relative z-20 container mx-auto px-6 pt-20">
+    <!-- HOME -->
+    <section id="home" class="min-h-[78vh] flex flex-col items-center justify-center text-center py-16 main-section">
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight hero-anim">
+        <span>Intelligent</span><br />
+        <span class="gradient-text">Data Solutions</span>
+      </h1>
+      <p class="mt-6 text-lg md:text-xl muted max-w-2xl">Building innovative AI and Data Science models to solve complex problems.</p>
+      <div class="mt-8 flex gap-4">
+        <a href="#contact" class="bg-brand-purple text-white px-5 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">Contact</a>
+        <a href="#skills" class="border border-border-color px-5 py-3 rounded-lg text-white">See Skills</a>
+      </div>
+    </section>
 
-        const projectsData = [
-            {
-                title: 'Plant Disease Detection ML Model',
-                description: 'A deep learning model using Convolutional Neural Networks (CNNs) to identify various diseases in plants from leaf images.',
-                imageUrl: 'download.jpg',
-                tags: ['TensorFlow', 'Keras', 'CNN', 'Computer Vision'],
-                projectUrl: 'https://github.com/Madhur984/Plant_Disease_Detection_System'
-            }
-        ];
+    <!-- ABOUT -->
+    <section id="about" class="py-20 main-section">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-4xl md:text-5xl font-bold leading-tight">
+            <span class="typewriter-line typewriter-line-1"></span><br/>
+            <span class="typewriter-line typewriter-line-2 gradient-text"></span><br/>
+            <span class="typewriter-line typewriter-line-3"></span>
+          </h2>
+          <p class="mt-6 muted max-w-xl">I am a Data Scientist from India with a passion for uncovering insights from data. I specialize in Machine Learning, Deep Learning, and Natural Language Processing, using tools like Python, TensorFlow, and PyTorch to build predictive models and intelligent systems. My goal is to transform data into actionable solutions that drive business value.</p>
+          <div class="mt-6">
+            <a href="#skills" class="bg-brand-purple text-white px-5 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">See Skills</a>
+          </div>
+        </div>
+
+        <div>
+          <!-- local path you provided earlier; ensure this path works on your machine -->
+          <img src="Screenshot 2025-10-07 225446.png" alt="Madhur's Portrait" class="rounded-lg shadow-2xl w-full h-auto object-cover about-image">
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS (grid layout with icons above) -->
+    <section id="skills" class="py-20 text-center main-section">
+      <p class="text-purple-300 font-semibold">MY EXPERTISE</p>
+      <h2 class="text-4xl md:text-5xl font-bold mt-2">Technical Skills in AI & Data Science</h2>
+
+      <div class="mt-12 grid skills-grid justify-stretch">
+        <!-- Python -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.83,14.74H15.2V11.26H10.15L12.83,14.74M12,5.7A3.3,3.3,0,0,0,8.7,9H11.33A.67.67,0,0,1,12,8.33a.69.69,0,0,1,.7.67.67.67,0,0,1-.67.67H8.7a3.34,3.34,0,0,0,0,6.68h2.66a.67.67,0,0,1,0,1.34H8.7a.69.69,0,0,1-.7-.67.67.67,0,0,1,.67-.67h2.63l-2.68-3.48H8.88v3.48H6.53V9H12a3.3,3.3,0,0,0,0-6.6Zm0,12.6A3.3,3.3,0,0,0,15.3,15H12.67a.67.67,0,0,1-.67-.67.69.69,0,0,1,.67-.67.67.67,0,0,1,.66.67h2.63A3.3,3.3,0,0,0,12,9.67H9.33a.67.67,0,0,1,0-1.34h3.34a.69.69,0,0,1,.7.67.67.67,0,0,1-.67.67H9.34l2.68,3.48h2.81V9.67h2.35V15H12A3.3,3.3,0,0,0,12,18.3Z" fill="#3776AB"/><path d="M12,5.7A3.3,3.3,0,0,0,8.7,9H11.33A.67.67,0,0,1,12,8.33a.69.69,0,0,1,.7.67.67.67,0,0,1-.67.67H8.7a3.34,3.34,0,0,0,0,6.68h2.66a.67.67,0,0,1,0,1.34H8.7a.69.69,0,0,1-.7-.67.67.67,0,0,1,.67-.67h2.63l-2.68-3.48H8.88v3.48H6.53V9H12a3.3,3.3,0,0,0,0-6.6Z" fill="#FFD43B"/></svg>
+          <h3 class="text-lg font-semibold mt-2">Python</h3>
+          <p class="muted mt-2 text-sm">Core language for data analysis, ML, and scripting.</p>
+        </div>
+
+        <!-- TensorFlow -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 2h18v2H3v16h18v2H3zM9.5 6 12 8.5 14.5 6H17v12h-2.5V11L12 13.5 9.5 11v7H7V6z" fill="#FF6F00"/></svg>
+          <h3 class="text-lg font-semibold mt-2">TensorFlow</h3>
+          <p class="muted mt-2 text-sm">End-to-end platform for building and deploying ML models.</p>
+        </div>
+
+        <!-- PyTorch -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M16.32 10.36c-1.32-1.14-3.02-.86-4.14 1.24l2.95 2.95c1.15-1.16 1.37-2.83.19-3.19zM10.87 12.67l1.73-1.73c-.4-.11-.88-.16-1.41-.11-.56.04-1.06.2-1.51.45-.93.53-1.55 1.41-1.79 2.34-.29 1.21.13 2.33 1 3.2.88.88 2.08 1.26 3.27.98.94-.24 1.79-.9 2.33-1.82.26-.45.41-.95.45-1.52.03-.5-.02-1-.13-1.44l-4.04-.4zm1.13-10.67a10 10 0 100 20 10 10 0 000-20z" fill="#EE4C2C"/></svg>
+          <h3 class="text-lg font-semibold mt-2">PyTorch</h3>
+          <p class="muted mt-2 text-sm">Open source framework for deep learning and research.</p>
+        </div>
+
+        <!-- Scikit-learn -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5" fill="#F7931E"/><path d="M22 13.24V11.63c-1-.5-1.87-1.37-2.37-2.38l.87-1.45-1.3-1.3-1.45.87c-1-.5-1.87-1.37-2.37-2.37H13.76V3H11.13v2.88H9.5c-.5 1-1.37 1.87-2.37 2.37L5.67 6.5l-1.3 1.3.87 1.45c-.5 1-1.37 1.87-2.37 2.37v2.61c1 .5 1.87 1.37 2.37 2.38l-.87 1.45 1.3 1.3 1.45-.87c1 .5 1.87 1.37 2.37 2.37H11.13v2.88h2.63v-2.88h1.63c.5-1 1.37-1.87 2.37-2.37l1.45.87 1.3-1.3-.87-1.45c.5-1 1.37-1.87 2.37-2.37z" fill="#3499CD"/></svg>
+          <h3 class="text-lg font-semibold mt-2">Scikit-learn</h3>
+          <p class="muted mt-2 text-sm">Classic machine learning algorithms and tools.</p>
+        </div>
+
+        <!-- Pandas & NumPy -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2m-8 16H9V5h2v14m4 0h-2V5h2v14m4 0h-2V5h2v14Z" fill="#130654"/></svg>
+          <h3 class="text-lg font-semibold mt-2">Pandas &amp; NumPy</h3>
+          <p class="muted mt-2 text-sm">Essential libraries for data manipulation and analysis.</p>
+        </div>
+
+        <!-- Keras -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19.5 2H4.5A2.5 2.5 0 002 4.5v15A2.5 2.5 0 004.5 22h15a2.5 2.5 0 002.5-2.5v-15A2.5 2.5 0 0019.5 2M18 12l-5.5 3.5v-1.94L15.31 12 12.5 10.44V8.5L18 12M5 13.5L7.5 12 5 10.5v3Z" fill="#D00000"/></svg>
+          <h3 class="text-lg font-semibold mt-2">Keras</h3>
+          <p class="muted mt-2 text-sm">High-level neural networks API, written in Python.</p>
+        </div>
+
+        <!-- SQL -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 4.69 2 8c0 2.97 4.03 5.43 9 5.91V20c-3.04.5-5 1.76-5 3v1h12v-1c0-1.24-1.96-2.5-5-3v-6.09c4.97-.48 9-2.94 9-5.91C22 4.69 17.52 2 12 2zm0 2c3.31 0 6 1.79 6 4s-2.69 4-6 4-6-1.79-6-4 2.69-4 6-4z" fill="#F29111"/></svg>
+          <h3 class="text-lg font-semibold mt-2">SQL</h3>
+          <p class="muted mt-2 text-sm">Querying and managing relational databases.</p>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="12" width="4.5" height="9" rx="1.125" fill="#4285F4"></rect><rect x="9.75" y="7.5" width="4.5" height="13.5" rx="1.125" fill="#34A853"></rect><rect x="16.5" y="3" width="4.5" height="18" rx="1.125" fill="#FBBC05"></rect></svg>
+          <h3 class="text-lg font-semibold mt-2">Data Visualization</h3>
+          <p class="muted mt-2 text-sm">Using Matplotlib &amp; Seaborn to create insightful plots.</p>
+        </div>
+
+        <!-- NLP -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 00-9 9c0 1.82.54 3.53 1.46 5.01L3 21l3.99-1.46A8.95 8.95 0 0012 21a9 9 0 009-9h-9z" fill="#4285F4"></path><path d="M21 12a9 9 0 00-9-9v9h9z" fill="#FBBC05"></path><path d="M12 21a8.95 8.95 0 005.01-1.46L21 21l-1.46-3.99A8.95 8.95 0 0021 12h-9v9z" fill="#34A853"></path></svg>
+          <h3 class="text-lg font-semibold mt-2">NLP</h3>
+          <p class="muted mt-2 text-sm">Analyzing and understanding human language with NLTK &amp; spaCy.</p>
+        </div>
+
+        <!-- Cloud -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M6 20h12c2.21 0 4-1.79 4-4s-1.79-4-4-4c-.34 0-.67.04-1 .11C16.33 8.58 13.41 6 10 6c-3.1 0-5.64 2.14-6.32 5.01C1.56 11.33 0 13.49 0 16c0 2.76 2.24 5 5 5h1z" fill="#4285F4"/></svg>
+          <h3 class="text-lg font-semibold mt-2">Cloud (AWS/GCP)</h3>
+          <p class="muted mt-2 text-sm">Deploying models and managing data on cloud platforms.</p>
+        </div>
+
+        <!-- Docker -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M22.012 12.5c0-.02 0-.04 0-.06v-.06c0-.28-.22-.5-.5-.5h-1.5c0-.01 0-.02 0-.03C20.012 10.84 19.85 9.8 19.52 8.83c-.45-1.59-1.39-2.97-2.64-3.97-.46-.38-.99-.66-1.56-.85L15.3 4.08c-.05 0-.09-.02-.14-.02-.63-.22-1.29-.34-1.97-.34-.05 0-.1 0-.15.01h-.44c-1.1.12-2.17.48-3.17.94-1.43.63-2.63 1.64-3.43 2.88-.5 1.05-.83 2.18-1.03 3.32h-.01c-.22 1.07-.33 2.18-.33 3.3 0 .74.11 1.47.31 2.18v.01c.43 1.55 1.34 2.88 2.67 3.82l.06.04c.82.52 1.79.9 2.83 1.13h.03c.47.15.96.26 1.45.32h.42l.19.01h.11c.11.01.22.02.33.02.58 0 1.14-.08 1.69-.24.55-.18 1.05-.45 1.48-.81 1.33-1.07 2.34-2.53 2.82-4.18.35-1.01.52-2.08.52-3.14l.01-.04.01-.01zm-5.01-6.5h-1.5v1.5h1.5V6zM12 6H10.5v1.5H12V6zM8.5 6H7v1.5h1.5V6zm6.5 2H14v1.5h1.5V8zM12 8H10.5v1.5H12V8zM8.5 8H7v1.5h1.5V8zM12 10h-1.5v1.5H12v-1.5z" fill="#2496ED"/></svg>
+          <h3 class="text-lg font-semibold mt-2">Docker</h3>
+          <p class="muted mt-2 text-sm">Containerizing applications for reproducible environments.</p>
+        </div>
+
+        <!-- MLOps -->
+        <div class="skill-card card p-6 rounded-lg flex flex-col items-center text-center">
+          <svg class="icon" viewBox="0 0 24 24"><defs><linearGradient id="g1" x1="0%" x2="100%"><stop offset="0%" stop-color="#A855F7"/><stop offset="100%" stop-color="#6366F1"/></linearGradient></defs><path stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0 0 11.667 0l3.181-3.183m-4.991-2.828a8.25 8.25 0 0 1-11.667 0l-3.181 3.183m16.023-11.667v4.992m0 0h-4.992m4.992 0l-3.181-3.183a8.25 8.25 0 0 0-11.667 0l-3.181 3.183"></path></svg>
+          <h3 class="text-lg font-semibold mt-2">MLOps</h3>
+          <p class="muted mt-2 text-sm">Practices for deploying and maintaining ML models in production.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROJECTS: smaller, two-column on desktop -->
+    <section id="work" class="py-20 main-section">
+      <div class="mb-8 text-center">
+        <p class="text-purple-300 font-semibold">PROJECTS</p>
+        <h2 class="text-3xl md:text-4xl font-bold mt-2">Featured Projects</h2>
+      </div>
+
+      <div class="grid project-grid gap-8">
+        <!-- Project card (smaller) -->
+        <a class="project-card card project-card p-0 overflow-hidden" href="https://github.com/Madhur984/Plant_Disease_Detection_System" target="_blank" rel="noopener">
+          <div class="md:flex items-stretch">
+            <div class="md:w-1/2">
+              <img src="download.jpg" alt="Plant Disease Detection" class="project-image w-full object-cover">
+            </div>
+            <div class="p-6 md:w-1/2">
+              <h3 class="text-xl md:text-2xl font-bold">Plant Disease Detection ML Model</h3>
+              <p class="muted mt-3">A CNN-based model to identify leaf diseases. Includes preprocessing, augmentation, training and demo deployment. Built with TensorFlow &amp; Keras.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">TensorFlow</span>
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Keras</span>
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Computer Vision</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
         
-        // --- DOM Elements ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const skillsGrid = document.getElementById('skills-grid');
-        const projectGrid = document.getElementById('project-grid');
-        const backToTopBtn = document.getElementById('back-to-top-btn');
-        const navLinks = document.querySelectorAll('nav a.nav-link');
-        const sections = document.querySelectorAll('main section');
-        
-        // --- Render Functions ---
-        const renderSkills = (skills) => {
-            skillsGrid.innerHTML = ''; 
-            skills.forEach(skill => {
-                const skillCard = `
-                    <div class="bg-card-bg border border-border-color p-6 rounded-lg flex flex-col items-center text-center aspect-square justify-center skill-card">
-                        ${skill.iconSvg}
-                        <h3 class="text-lg font-semibold">${skill.name}</h3>
-                        <p class="text-gray-400 mt-1 text-sm">${skill.description}</p>
-                    </div>
-                `;
-                skillsGrid.innerHTML += skillCard;
-            });
-        };
+      </div>
+    </section>
 
-        const renderProjects = (projects) => {
-            projectGrid.innerHTML = ''; 
-            projects.forEach(project => {
-                const tagsHtml = project.tags.map(tag => `<span class="bg-gray-700 text-gray-300 text-xs font-medium mr-2 mb-2 inline-block px-2.5 py-0.5 rounded-full">${tag}</span>`).join('');
+    <!-- CONTACT -->
+    <section id="contact" class="py-20 main-section">
+      <div class="max-w-xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold">Let’s build something impactful</h2>
+        <p class="muted mt-4">If you have a project idea or want to collaborate, reach out — I focus on ML solutions that create measurable impact.</p>
+        <div class="mt-6">
+          <a href="mailto:gmadhur908@gmail.com" class="px-6 py-3 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-500 text-white font-semibold">gmadhur908@gmail.com</a>
+        </div>
+        <div class="mt-4 muted text-sm">© 2025 Madhur Garg</div>
+      </div>
+    </section>
+  </main>
 
-                const projectCard = `
-                    <a href="${project.projectUrl || '#'}" target="_blank" rel="noopener noreferrer" class="block bg-card-bg border border-border-color rounded-lg overflow-hidden project-card">
-                        <img src="${project.imageUrl}" alt="${project.title}" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-white">${project.title}</h3>
-                            <p class="text-gray-400 mt-2">${project.description}</p>
-                            <div class="mt-4 flex flex-wrap">
-                                ${tagsHtml}
-                            </div>
-                        </div>
-                    </a>
-                `;
-                projectGrid.innerHTML += projectCard;
-            });
-        };
-        
-        // --- Event Handlers ---
-        const toggleMobileMenu = () => {
-            mobileMenu.classList.toggle('hidden');
-        };
+  <!-- BACK TO TOP -->
+  <a id="back-to-top-btn" href="#home" class="bg-brand-purple p-3 rounded-full text-white hover:bg-purple-700 transition-colors shadow-lg" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </a>
 
-        const setupSmoothScrolling = () => {
-             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(this.getAttribute('href'));
-                    
-                    if (targetElement) {
-                        const header = document.querySelector('header');
-                        const headerHeight = header ? header.offsetHeight : 0;
-                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                    }
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                });
-            });
-        };
-        
-        const handleScroll = () => {
-            // Back to Top Button visibility
-            if (window.scrollY > 400) {
-                backToTopBtn.classList.add('is-visible');
-            } else {
-                backToTopBtn.classList.remove('is-visible');
-            }
-            
-            // Active Nav Link Highlighting
-            let currentSectionId = '';
-            const headerHeight = document.querySelector('header').offsetHeight;
+  <!-- SCRIPTS: nav, typing, GSAP, three.js -->
+  <script>
+    // Mobile nav toggle
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    mobileToggle?.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
 
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - headerHeight - 20;
-                if (window.scrollY >= sectionTop) {
-                    currentSectionId = section.id;
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').substring(1) === currentSectionId) {
-                    link.classList.add('active');
-                }
-            });
-        };
+    // Smooth scrolling with header offset
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        const href = this.getAttribute('href');
+        if (!href.startsWith('#')) return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (!target) return;
+        const header = document.querySelector('header');
+        const headerH = header ? header.offsetHeight : 0;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - 8;
+        window.scrollTo({ top, behavior: 'smooth' });
+        if (!mobileNav.classList.contains('hidden')) mobileNav.classList.add('hidden');
+      });
+    });
 
-        // --- Intersection Observer for Scroll Animations ---
-        const setupScrollAnimations = () => {
-            const sections = document.querySelectorAll('.fade-in-section');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    } else {
-                        entry.target.classList.remove('is-visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-        };
-        
-        // --- App Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            renderSkills(skillsData);
-            renderProjects(projectsData);
+    // Active nav highlighting + back to top
+    const navLinks = document.querySelectorAll('nav a.nav-link');
+    const sections = document.querySelectorAll('main section');
+    const backBtn = document.getElementById('back-to-top-btn');
 
-            mobileMenuButton.addEventListener('click', toggleMobileMenu);
-            setupSmoothScrolling();
-            setupScrollAnimations();
-            
-            window.addEventListener('scroll', handleScroll);
-            handleScroll();
-        });
-    </script>
+    function updateNav(){
+      const headerH = document.querySelector('header').offsetHeight;
+      let current = 'home';
+      sections.forEach(s => {
+        if (window.scrollY >= (s.offsetTop - headerH - 90)) current = s.id;
+      });
+      navLinks.forEach(a => a.classList.remove('active'));
+      const act = document.getElementById('nav-' + current);
+      if (act) act.classList.add('active');
+
+      if (window.scrollY > 400) backBtn.classList.add('is-visible'); else backBtn.classList.remove('is-visible');
+    }
+    window.addEventListener('scroll', updateNav);
+    window.addEventListener('resize', updateNav);
+    updateNav();
+
+    // GSAP reveal
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('.hero-anim').forEach((el,i) => {
+      gsap.fromTo(el, {opacity:0, y:20}, {opacity:1, y:0, duration:0.8, delay:i*0.06, ease:'power2.out'});
+    });
+    gsap.utils.toArray('.main-section').forEach(sec=>{
+      gsap.fromTo(sec, {opacity:0.94, y:20}, {
+        opacity:1, y:0, duration:0.9, ease:'power2.out',
+        scrollTrigger: { trigger: sec, start: 'top 85%', end: 'bottom 10%', scrub: 0.6 }
+      });
+    });
+    gsap.utils.toArray('.skill-card').forEach((card,i)=>{
+      gsap.fromTo(card,{opacity:0.96,y:12},{opacity:1,y:0,duration:0.7,delay:i*0.03,ease:'power2.out',scrollTrigger:{trigger:card,start:'top 92%',toggleActions:'play reverse play reverse'}});
+    });
+
+    // TYPEWRITER (sequential, robust loop)
+    const t1 = document.querySelector('.typewriter-line-1');
+    const t2 = document.querySelector('.typewriter-line-2');
+    const t3 = document.querySelector('.typewriter-line-3');
+    const lines = [
+      { el: t1, text: "Hey, I'm Madhur!" },
+      { el: t2, text: "AI & ML Scientist" },
+      { el: t3, text: "Self Made Programmer" }
+    ];
+    let typing = false, cancelTyping = false;
+
+    function typeLine(el, text, speed=42){
+      return new Promise(res=>{
+        if (!el) return res();
+        el.textContent = '';
+        el.classList.add('caret');
+        let i=0;
+        const iv = setInterval(()=>{
+          if (cancelTyping) { clearInterval(iv); el.classList.remove('caret'); return res(); }
+          el.textContent += text.charAt(i);
+          i++;
+          if (i >= text.length) { clearInterval(iv); setTimeout(res, 320); }
+        }, speed);
+      });
+    }
+
+    function eraseLine(el, speed=28){
+      return new Promise(res=>{
+        if (!el) return res();
+        el.classList.add('caret');
+        let s = el.textContent; let i = s.length;
+        const iv = setInterval(()=>{
+          if (cancelTyping) { clearInterval(iv); el.classList.remove('caret'); return res(); }
+          i--; el.textContent = s.substring(0, i);
+          if (i <= 0) { clearInterval(iv); el.classList.remove('caret'); setTimeout(res, 140); }
+        }, speed);
+      });
+    }
+
+    async function runTypingLoop(){
+      if (typing) return;
+      typing = true;
+      cancelTyping = false;
+      try {
+        while (!cancelTyping) {
+          // forward
+          for (let i=0;i<lines.length;i++){
+            await typeLine(lines[i].el, lines[i].text, 42);
+            await new Promise(r=>setTimeout(r, 300));
+            if (cancelTyping) break;
+          }
+          await new Promise(r=>setTimeout(r, 1400));
+          // erase back
+          for (let i=lines.length-1;i>=0;i--){
+            await eraseLine(lines[i].el, 28);
+            await new Promise(r=>setTimeout(r, 120));
+            if (cancelTyping) break;
+          }
+          await new Promise(r=>setTimeout(r, 600));
+        }
+      } catch(e){ console.error(e); }
+      typing = false;
+    }
+
+    ScrollTrigger.create({
+      trigger: '#about',
+      start: 'top 80%',
+      end: 'bottom 20%',
+      onEnter: ()=>{ cancelTyping=false; if(!typing) runTypingLoop(); },
+      onEnterBack: ()=>{ cancelTyping=false; if(!typing) runTypingLoop(); },
+      onLeave: ()=>{ cancelTyping=true; lines.forEach(l=>l.el && l.el.classList.remove('caret')); },
+      onLeaveBack: ()=>{ cancelTyping=true; lines.forEach(l=>l.el && l.el.classList.remove('caret')); }
+    });
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const rect = document.querySelector('#about').getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2) { cancelTyping=false; runTypingLoop(); }
+    });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.globalTimeline.timeScale(3);
+
+  </script>
+
+  <!-- Three.js background with increased particles -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('three-bg');
+      if (!canvas) return;
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.outputEncoding = THREE.sRGBEncoding;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000);
+      camera.position.set(0,0,60);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+      const dir = new THREE.DirectionalLight(0xffffff, 0.12);
+      dir.position.set(5,10,7); scene.add(dir);
+
+      // soft spheres
+      const s1 = new THREE.Mesh(new THREE.IcosahedronGeometry(18,2), new THREE.MeshStandardMaterial({
+        color: 0x6d28d9, metalness:0.08, roughness:0.6, transparent:true, opacity:0.12, emissive:0x341a7a, emissiveIntensity:0.12
+      })); s1.position.set(-18,8,-20); scene.add(s1);
+
+      const s2 = new THREE.Mesh(new THREE.IcosahedronGeometry(28,1), new THREE.MeshStandardMaterial({
+        color:0x1e3a8a, metalness:0.02, roughness:0.85, transparent:true, opacity:0.07, emissive:0x0b3b7a, emissiveIntensity:0.06
+      })); s2.position.set(28,-12,-40); scene.add(s2);
+
+      // particles increased density (scale with window width)
+      const particleCount = Math.min(1800, Math.floor(window.innerWidth * 1.6));
+      const positions = new Float32Array(particleCount * 3);
+      for (let i=0;i<particleCount;i++){
+        positions[i*3+0] = (Math.random()-0.5) * 260;
+        positions[i*3+1] = (Math.random()-0.5) * 200;
+        positions[i*3+2] = (Math.random()-0.5) * 260;
+      }
+      const pGeom = new THREE.BufferGeometry();
+      pGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const pMat = new THREE.PointsMaterial({ size: 0.9, color: 0xc084fc, transparent:true, opacity:0.16, sizeAttenuation:true });
+      const particles = new THREE.Points(pGeom, pMat);
+      scene.add(particles);
+
+      // pointer parallax
+      let px = 0, py = 0;
+      window.addEventListener('mousemove', (e) => {
+        px = (e.clientX / window.innerWidth) * 2 - 1;
+        py = - (e.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      const clock = new THREE.Clock();
+      (function animate(){
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+        s1.rotation.y = Math.sin(t * 0.12) * 0.2;
+        s1.rotation.x = Math.cos(t * 0.06) * 0.08;
+        s2.rotation.y = Math.cos(t * 0.1) * 0.08;
+        particles.rotation.y += 0.0009;
+        particles.rotation.x = Math.sin(t * 0.02) * 0.002;
+
+        const parx = px * 4, pary = py * 2;
+        camera.position.x += (parx - camera.position.x) * 0.03;
+        camera.position.y += (pary - camera.position.y) * 0.03;
+        camera.lookAt(0,0,0);
+
+        renderer.render(scene, camera);
+      })();
+
+      window.addEventListener('resize', ()=>{
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+      });
+
+      // respect reduced motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) renderer.render(scene, camera);
+    })();
+  </script>
+
 </body>
 </html>
-
