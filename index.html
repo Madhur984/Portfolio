@@ -184,7 +184,7 @@
       grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 768px) {
       .project-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -529,31 +529,53 @@
 
     <!-- PROJECTS: smaller, two-column on desktop -->
     <section id="work" class="py-20 main-section">
-            <div class="mb-8 text-center">
-                <p class="text-purple-300 font-semibold">PROJECTS</p>
-                <h2 class="text-3xl md:text-4xl font-bold mt-2">Featured Projects</h2>
-              </div>
+      <div class="mb-8 text-center">
+        <p class="text-purple-300 font-semibold">PROJECTS</p>
+        <h2 class="text-3xl md:text-4xl font-bold mt-2">Featured Projects</h2>
+      </div>
 
-            <div class="grid project-grid gap-8">
-                  <div class="md:flex items-stretch">
-                      <div class="md:w-1/2">
-                                        <img src="image-wm (3).png" alt="BharatVision Project"
-              class="project-image w-full object-cover">
-                        </div>
-                      <div class="p-6 md:w-1/2">
-                          <h3 class="text-xl md:text-2xl font-bold">BharatVision: Image Recognition</h3>
-                          <p class="muted mt-3">A computer vision project focused on advanced image recognition and
-              classification tasks, demonstrating proficiency in scalable deep learning architecture.</p>
-                          <div class="mt-4 flex flex-wrap gap-2">
-                              <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Deep Learning</span>
-                              <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Python</span>
-                              <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Computer Vision</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-              </div>
-          </section>
+      <div class="grid project-grid gap-8">
+        <!-- Project card 1 -->
+        <a class="project-card card p-0 overflow-hidden"
+          href="https://github.com/Madhur984/Plant_Disease_Detection_System" target="_blank" rel="noopener">
+          <div class="flex flex-col h-full">
+            <div class="w-full">
+              <img src="download.jpg" alt="Plant Disease Detection" class="project-image">
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold">Plant Disease Detection ML Model</h3>
+              <p class="muted mt-3 flex-1">A CNN-based model to identify leaf diseases. Includes preprocessing,
+                augmentation, training and demo deployment. Built with TensorFlow &amp; Keras.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">TensorFlow</span>
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Keras</span>
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Computer Vision</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Project card 2 -->
+        <a class="project-card card p-0 overflow-hidden" href="https://github.com/Madhur984/BharatVision"
+          target="_blank" rel="noopener">
+          <div class="flex flex-col h-full">
+            <div class="w-full">
+              <img src="image-wm (3).png" alt="BharatVision Project" class="project-image">
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold">BharatVision: Image Recognition</h3>
+              <p class="muted mt-3 flex-1">A computer vision project focused on advanced image recognition and
+                classification tasks, demonstrating proficiency in scalable deep learning architecture.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Deep Learning</span>
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Python</span>
+                <span class="px-3 py-1 bg-white/5 rounded-full text-xs">Computer Vision</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
 
     <!-- CONTACT -->
     <section id="contact" class="py-20 main-section">
